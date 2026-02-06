@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bulmaca Stüdyosu</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,7 +17,7 @@
 
     <!-- Main Game Area (Hidden initially) -->
     <div id="game-container"
-        style="display:none; width: 100%; flex-direction: column; align-items: center;">
+        style="display:none; width: 100%; display: flex; flex-direction: column; align-items: center;">
         <header>
             <h1 id="puzzle-title">Dünya Şehirleri</h1>
             <p class="subtitle" id="puzzle-desc">20 Önemli Şehir - Bilgini Test Et</p>
@@ -48,7 +48,7 @@
                     </div>
                 </div>
                 <div class="clues-box">
-                    <h3>DİKEY</h3>
+                    <h3>DÜŞEY</h3>
                     <div id="clues-down">
                         <!-- Clues injected by JS -->
                     </div>
@@ -57,21 +57,14 @@
 
         </div>
 
-        <!-- Mobile Floating Clue Panel -->
-        <div id="mobile-clue-panel" class="mobile-clue-panel">
-            <div class="mobile-clue-content">
-                <span id="mobile-clue-number" class="mobile-clue-number"></span>
-                <span id="mobile-clue-direction" class="mobile-clue-direction"></span>
-                <p id="mobile-clue-text" class="mobile-clue-text">Bir kelime seçin...</p>
-            </div>
-        </div>
-
-        <!-- Mobile Floating Clue Popup (shown when keyboard is open) -->
+        <!-- Mobile Clue Popup -->
         <div id="mobile-clue-popup" class="mobile-clue-popup">
             <div class="mobile-clue-popup-content">
                 <button class="close-popup" onclick="closeMobilePopup()">✕</button>
-                <span id="popup-clue-number" class="popup-clue-number"></span>
-                <span id="popup-clue-direction" class="popup-clue-direction"></span>
+                <div>
+                    <span id="popup-clue-number" class="popup-clue-number"></span>
+                    <span id="popup-clue-direction" class="popup-clue-direction"></span>
+                </div>
                 <p id="popup-clue-text" class="popup-clue-text"></p>
             </div>
         </div>
