@@ -573,6 +573,94 @@ footer#credits {
     display: none; /* Hidden by default (desktop) */
 }
 
+/* Mobile Clue Popup - Shows when keyboard is open */
+.mobile-clue-popup {
+    display: none;
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    background: white;
+    border: 3px solid var(--color-olive);
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    z-index: 2000;
+    max-width: 85%;
+    max-height: 50vh;
+    overflow-y: auto;
+    animation: popupSlideIn 0.3s ease-out;
+}
+
+.mobile-clue-popup.show {
+    display: block;
+}
+
+@keyframes popupSlideIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -20px);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+.mobile-clue-popup-content {
+    padding: 20px;
+    position: relative;
+}
+
+.close-popup {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--color-sage);
+    color: white;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.close-popup:active {
+    background: var(--color-olive);
+}
+
+.popup-clue-number {
+    font-weight: 800;
+    font-size: 2rem;
+    color: var(--color-olive);
+    display: block;
+    line-height: 1;
+    margin-bottom: 5px;
+}
+
+.popup-clue-direction {
+    font-size: 0.85rem;
+    color: var(--color-sage);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    display: block;
+    margin-bottom: 15px;
+}
+
+.popup-clue-text {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--text-color);
+    margin: 0;
+    font-weight: 400;
+}
+
 @media (max-width: 768px) {
     /* Compact header for mobile */
     header {
@@ -825,6 +913,25 @@ footer#credits {
     .mobile-clue-text {
         font-size: 0.9rem;
         line-height: 1.4;
+    }
+
+    /* Popup adjustments for landscape */
+    .mobile-clue-popup {
+        top: 10%;
+        max-height: 40vh;
+    }
+
+    .mobile-clue-popup-content {
+        padding: 15px;
+    }
+
+    .popup-clue-number {
+        font-size: 1.5rem;
+    }
+
+    .popup-clue-text {
+        font-size: 0.95rem;
+        line-height: 1.5;
     }
 
     /* Optimize cell size for landscape */

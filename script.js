@@ -426,13 +426,43 @@ window.saveToArchive = function () {
 
     // Get existing archives
     let archives = JSON.parse(localStorage.getItem('puzzleArchives') || '[]');
+    
+    // Check if too many puzzles (limit to 50)
+    if (archives.length >= 50) {
+        if (!confirm(`Arşivde ${archives.length} bulmaca var. Eski bulmacalar silinsin mi?\n\nYeni bulmaca eklemek için yer açmanız gerekiyor.`)) {
+            return;
+        }
+        // Remove oldest 10 puzzles
+        archives = archives.slice(0, 40);
+    }
+    
     archives.unshift(archiveEntry); // Add to beginning
-    localStorage.setItem('puzzleArchives', JSON.stringify(archives));
-
-    alert(`"${title}" arşive kaydedildi! ✅`);
-
-    // Refresh the list
-    loadSavedPuzzles();
+    
+    try {
+        localStorage.setItem('puzzleArchives', JSON.stringify(archives));
+        alert(`"${title}" arşive kaydedildi! ✅`);
+        
+        // Refresh the list
+        loadSavedPuzzles();
+    } catch (e) {
+        if (e.name === 'QuotaExceededError') {
+            alert('❌ Depolama alanı dolu!\n\nLütfen eski bulmacalarınızı silin veya tarayıcı önbelleğinizi temizleyin.');
+            
+            // Offer to delete old puzzles
+            if (confirm('En eski 20 bulmacayı silmek ister misiniz?')) {
+                archives = archives.slice(0, 30);
+                try {
+                    localStorage.setItem('puzzleArchives', JSON.stringify(archives));
+                    alert('✅ Yer açıldı! Şimdi tekrar deneyin.');
+                    loadSavedPuzzles();
+                } catch (e2) {
+                    alert('❌ Hata: Lütfen tarayıcınızın depolama ayarlarını kontrol edin.');
+                }
+            }
+        } else {
+            alert('❌ Kayıt hatası: ' + e.message);
+        }
+    }
 }
 
 function loadSavedPuzzles() {
@@ -449,6 +479,19 @@ function loadSavedPuzzles() {
     listContainer.style.display = 'block';
     divider.style.display = 'flex';
     listContainer.innerHTML = '';
+
+    // Show warning if too many puzzles
+    if (archives.length > 40) {
+        const warningDiv = document.createElement('div');
+        warningDiv.style.cssText = 'background: #fff3cd; border: 2px solid #ffc107; border-radius: 8px; padding: 12px; margin-bottom: 15px; text-align: center;';
+        warningDiv.innerHTML = `
+            <p style="margin: 0; color: #856404; font-size: 0.9rem;">
+                ⚠️ Arşivde ${archives.length} bulmaca var. 
+                ${archives.length >= 45 ? '<br><strong>Yakında depolama dolacak!</strong> Eski bulmacaları silmenizi öneririz.' : ''}
+            </p>
+        `;
+        listContainer.appendChild(warningDiv);
+    }
 
     archives.forEach((archive, index) => {
         const card = document.createElement('div');
@@ -663,7 +706,18 @@ function renderBoard() {
 
                     boardState.cells[`${gx},${gy}`] = { el: cellDiv, input };
 
-                    input.addEventListener('focus', () => handleCellFocus(gx, gy));
+                    input.addEventListener('focus', () => {
+                        handleCellFocus(gx, gy);
+                        showMobilePopup();
+                    });
+                    input.addEventListener('blur', () => {
+                        // Close popup when input loses focus
+                        setTimeout(() => {
+                            if (!document.activeElement || !document.activeElement.classList.contains('input-ghost')) {
+                                closeMobilePopup();
+                            }
+                        }, 100);
+                    });
                     input.addEventListener('input', (e) => handleInput(e, gx, gy));
                     input.addEventListener('keydown', (e) => handleKeyDown(e, gx, gy));
                     input.addEventListener('click', (e) => handleCellClick(e, gx, gy));
@@ -810,10 +864,20 @@ function updateMobileCluePanel() {
     const directionEl = document.getElementById('mobile-clue-direction');
     const textEl = document.getElementById('mobile-clue-text');
 
+    // Also update popup
+    const popupNumberEl = document.getElementById('popup-clue-number');
+    const popupDirectionEl = document.getElementById('popup-clue-direction');
+    const popupTextEl = document.getElementById('popup-clue-text');
+
     if (boardState.activeWord === null || boardState.activeWord === undefined) {
         numberEl.textContent = '';
         directionEl.textContent = '';
         textEl.textContent = 'Bir kelime seçin...';
+        if (popupNumberEl) {
+            popupNumberEl.textContent = '';
+            popupDirectionEl.textContent = '';
+            popupTextEl.textContent = 'Bir kelime seçin...';
+        }
         return;
     }
 
@@ -822,6 +886,30 @@ function updateMobileCluePanel() {
         numberEl.textContent = word.number;
         directionEl.textContent = word.direction === 'across' ? 'YATAY' : 'DİKEY';
         textEl.textContent = word.clue;
+        
+        if (popupNumberEl) {
+            popupNumberEl.textContent = word.number;
+            popupDirectionEl.textContent = word.direction === 'across' ? 'YATAY' : 'DİKEY';
+            popupTextEl.textContent = word.clue;
+        }
+    }
+}
+
+// Show popup on mobile when input is focused
+window.showMobilePopup = function() {
+    if (window.innerWidth <= 768) {
+        const popup = document.getElementById('mobile-clue-popup');
+        if (popup && boardState.activeWord !== null) {
+            popup.classList.add('show');
+        }
+    }
+}
+
+// Close popup
+window.closeMobilePopup = function() {
+    const popup = document.getElementById('mobile-clue-popup');
+    if (popup) {
+        popup.classList.remove('show');
     }
 }
 
