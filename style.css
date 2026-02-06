@@ -501,8 +501,8 @@ p.subtitle {
     display: none;
 }
 
-/* Mobile-specific styles */
-@media (max-width: 768px) {
+/* Mobile-specific styles - use max-height for landscape detection */
+@media (max-width: 768px), (max-height: 500px) {
     /* Hide subtitle on mobile */
     p.subtitle {
         display: none !important;
@@ -655,8 +655,8 @@ p.subtitle {
     }
 }
 
-/* Landscape mobile */
-@media (max-width: 768px) and (orientation: landscape) {
+/* Landscape mobile - catch wider phones like iPhone 12 Pro */
+@media (max-height: 500px) and (orientation: landscape) {
     h1 {
         font-size: 1.1rem;
         display: inline-block;

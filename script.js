@@ -1043,7 +1043,10 @@ window.showSolution = function () {
 
 // Mobile Popup Functions
 window.showMobilePopup = function() {
-    if (window.innerWidth <= 768 && boardState.activeWord !== null) {
+    // Mobile detection: width <= 768px OR height <= 500px (landscape phones)
+    const isMobile = window.innerWidth <= 768 || window.innerHeight <= 500;
+    
+    if (isMobile && boardState.activeWord !== null) {
         updateMobilePopup();
         const popup = document.getElementById('mobile-clue-popup');
         if (popup) {
