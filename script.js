@@ -901,6 +901,7 @@ window.showMobilePopup = function() {
         const popup = document.getElementById('mobile-clue-popup');
         if (popup && boardState.activeWord !== null) {
             popup.classList.add('show');
+            document.body.classList.add('popup-open');
         }
     }
 }
@@ -910,6 +911,7 @@ window.closeMobilePopup = function() {
     const popup = document.getElementById('mobile-clue-popup');
     if (popup) {
         popup.classList.remove('show');
+        document.body.classList.remove('popup-open');
     }
 }
 

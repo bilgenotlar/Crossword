@@ -577,88 +577,90 @@ footer#credits {
 .mobile-clue-popup {
     display: none;
     position: fixed;
-    top: 20%;
-    left: 50%;
-    transform: translate(-50%, 0);
+    top: 0;
+    left: 0;
+    right: 0;
     background: white;
-    border: 3px solid var(--color-olive);
-    border-radius: 16px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    border-bottom: 3px solid var(--color-olive);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
     z-index: 2000;
-    max-width: 85%;
-    max-height: 50vh;
+    max-height: 40vh;
     overflow-y: auto;
-    animation: popupSlideIn 0.3s ease-out;
+    animation: popupSlideDown 0.3s ease-out;
 }
 
 .mobile-clue-popup.show {
     display: block;
 }
 
-@keyframes popupSlideIn {
+@keyframes popupSlideDown {
     from {
         opacity: 0;
-        transform: translate(-50%, -20px);
+        transform: translateY(-100%);
     }
     to {
         opacity: 1;
-        transform: translate(-50%, 0);
+        transform: translateY(0);
     }
 }
 
 .mobile-clue-popup-content {
-    padding: 20px;
+    padding: 15px 20px;
     position: relative;
+    background: linear-gradient(to bottom, var(--color-light-green) 0%, white 100%);
 }
 
 .close-popup {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 12px;
+    right: 15px;
     background: var(--color-sage);
     color: white;
     border: none;
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: bold;
     line-height: 1;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .close-popup:active {
     background: var(--color-olive);
+    transform: scale(0.95);
 }
 
 .popup-clue-number {
     font-weight: 800;
-    font-size: 2rem;
+    font-size: 1.8rem;
     color: var(--color-olive);
-    display: block;
+    display: inline-block;
     line-height: 1;
-    margin-bottom: 5px;
+    margin-right: 10px;
 }
 
 .popup-clue-direction {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     color: var(--color-sage);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1.5px;
-    display: block;
-    margin-bottom: 15px;
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .popup-clue-text {
-    font-size: 1.1rem;
-    line-height: 1.6;
+    font-size: 1rem;
+    line-height: 1.5;
     color: var(--text-color);
-    margin: 0;
+    margin: 10px 0 0 0;
     font-weight: 400;
+    padding-right: 30px;
 }
 
 @media (max-width: 768px) {
@@ -666,6 +668,13 @@ footer#credits {
     header {
         margin: 10px 0 5px 0;
         padding: 0 10px;
+        transition: opacity 0.3s ease;
+    }
+
+    /* Hide header when popup is open */
+    body.popup-open header {
+        opacity: 0;
+        pointer-events: none;
     }
 
     h1 {
@@ -917,21 +926,29 @@ footer#credits {
 
     /* Popup adjustments for landscape */
     .mobile-clue-popup {
-        top: 10%;
-        max-height: 40vh;
+        max-height: 30vh;
     }
 
     .mobile-clue-popup-content {
-        padding: 15px;
+        padding: 12px 15px;
     }
 
     .popup-clue-number {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
     }
 
     .popup-clue-text {
+        font-size: 0.9rem;
+        line-height: 1.4;
+        margin-top: 8px;
+    }
+
+    .close-popup {
+        width: 24px;
+        height: 24px;
         font-size: 0.95rem;
-        line-height: 1.5;
+        top: 10px;
+        right: 12px;
     }
 
     /* Optimize cell size for landscape */
