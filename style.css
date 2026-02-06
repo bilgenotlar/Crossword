@@ -533,6 +533,31 @@ p.subtitle {
         display: none;
     }
 
+    /* Optimize spacing for portrait */
+    .main-container {
+        padding: 12px;
+        gap: 12px;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .crossword-section {
+        margin: 0;
+        width: 100%;
+    }
+
+    .crossword-board-container {
+        padding: 12px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    #crossword-grid {
+        width: fit-content;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
     /* Mobile Popup Styles */
     .mobile-clue-popup {
         display: none;
@@ -650,6 +675,21 @@ p.subtitle {
     .btn-small {
         padding: 3px 8px;
         font-size: 0.65rem;
+    }
+
+    .main-container {
+        padding: 8px;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .crossword-board-container {
+        padding: 8px;
+        width: 100%;
+    }
+
+    #crossword-grid {
+        max-width: 100%;
     }
 
     .mobile-clue-popup {
