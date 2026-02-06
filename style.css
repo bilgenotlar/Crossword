@@ -328,11 +328,25 @@ p.subtitle {
 .cell.active {
     background-color: var(--grid-bg);
     cursor: pointer;
-    border: 1px solid var(--color-sage);
+    box-shadow: 
+        0 0 0 1px var(--color-sage) inset;
     display: flex;
     justify-content: center;
     align-items: center;
     transition: all 0.2s ease;
+}
+
+.cell.active:hover,
+.cell.active:active {
+    background-color: #fcfcfc;
+    box-shadow: 
+        0 0 0 1px var(--primary-color) inset;
+}
+
+.cell.selected {
+    background-color: var(--selected-cell);
+    box-shadow: 
+        0 0 0 2px var(--primary-color) inset;
 }
 
 .input-ghost {
@@ -356,17 +370,6 @@ p.subtitle {
 .input-ghost.incorrect {
     color: #e74c3c;
     font-weight: 800;
-}
-
-.cell.active:hover,
-.cell.active:active {
-    background-color: #fcfcfc;
-    border-color: var(--primary-color);
-}
-
-.cell.selected {
-    background-color: var(--selected-cell);
-    border-color: var(--primary-color);
 }
 
 .cell.highlighted-word {
@@ -565,11 +568,123 @@ footer#credits {
 }
 
 /* Mobile Specific Optimizations */
+/* Mobile Floating Clue Panel - Only visible on mobile */
+.mobile-clue-panel {
+    display: none; /* Hidden by default (desktop) */
+}
+
 @media (max-width: 768px) {
+    /* Compact header for mobile */
+    header {
+        margin: 10px 0 5px 0;
+        padding: 0 10px;
+    }
+
+    h1 {
+        font-size: 1.3rem !important;
+        margin-bottom: 0.1rem;
+        line-height: 1.2;
+    }
+
+    p.subtitle {
+        font-size: 0.75rem !important;
+        margin-bottom: 5px;
+        line-height: 1.2;
+    }
+
+    .header-controls {
+        gap: 6px;
+        margin-top: 5px;
+    }
+
+    .btn-small {
+        padding: 4px 10px;
+        font-size: 0.7rem;
+        border-radius: 15px;
+    }
+
+    /* Show mobile clue panel on mobile */
+    .mobile-clue-panel {
+        display: block;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(to top, white 0%, white 90%, rgba(255,255,255,0.95) 100%);
+        border-top: 4px solid var(--color-olive);
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
+        z-index: 100;
+        padding: 18px 20px 20px 20px;
+        min-height: 100px;
+        max-height: 35vh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .mobile-clue-content {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .mobile-clue-number {
+        font-weight: 800;
+        font-size: 1.4rem;
+        color: var(--color-olive);
+        line-height: 1;
+    }
+
+    .mobile-clue-direction {
+        font-size: 0.75rem;
+        color: var(--color-sage);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        margin-top: -5px;
+    }
+
+    .mobile-clue-text {
+        font-size: 1.05rem;
+        line-height: 1.6;
+        color: var(--text-color);
+        margin: 0;
+        font-weight: 400;
+    }
+
+    /* Hide desktop clues on mobile */
+    .clues-container {
+        display: none;
+    }
+
+    /* Add padding to main container to prevent overlap with fixed panel */
+    .main-container {
+        padding-bottom: 180px; /* Space for fixed panel */
+    }
+
+    /* Make grid scrollable and fill available space */
+    .crossword-section {
+        flex: 1;
+        overflow: visible;
+    }
+
+    .crossword-board-container {
+        min-height: 300px;
+        max-height: calc(100vh - 280px);
+        overflow: auto;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 15px;
+    }
+
+    #crossword-grid {
+        margin: 0;
+    }
+
     .main-container {
         flex-direction: column;
-        padding: 15px;
-        gap: 20px;
+        padding: 10px;
+        gap: 15px;
     }
 
     .crossword-section,
@@ -588,18 +703,28 @@ footer#credits {
     }
 
     .cell {
-        width: clamp(24px, 8vw, 32px);
-        height: clamp(24px, 8vw, 32px);
+        width: clamp(30px, 9vw, 38px);
+        height: clamp(30px, 9vw, 38px);
     }
 
     .input-ghost {
-        font-size: clamp(12px, 4vw, 18px);
+        font-size: clamp(14px, 5vw, 20px);
     }
 
     .cell-number {
-        font-size: 7px;
+        font-size: clamp(7px, 2vw, 9px);
         top: 1px;
         left: 2px;
+    }
+
+    /* Compact solution button */
+    .solution-button-container {
+        margin-top: 10px;
+    }
+
+    .btn-solution {
+        font-size: 0.8rem;
+        padding: 6px 15px;
     }
 
     header {
@@ -644,6 +769,87 @@ footer#credits {
 
 /* Landscape mode on mobile */
 @media (max-height: 500px) and (orientation: landscape) {
+    /* Ultra compact header for landscape */
+    header {
+        margin: 5px 0;
+        padding: 0 10px;
+    }
+
+    h1 {
+        font-size: 1.1rem !important;
+        margin: 0;
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    p.subtitle {
+        display: none !important; /* Hide subtitle in landscape */
+    }
+
+    .header-controls {
+        display: inline-block;
+        margin: 0 0 0 10px;
+        vertical-align: middle;
+    }
+
+    .btn-small {
+        padding: 3px 8px;
+        font-size: 0.65rem;
+    }
+
+    .btn-share {
+        padding: 3px 8px;
+    }
+
+    /* Optimize grid container for landscape */
+    .crossword-board-container {
+        max-height: calc(100vh - 180px);
+        padding: 10px;
+    }
+
+    .main-container {
+        padding: 5px;
+        gap: 10px;
+    }
+
+    .mobile-clue-panel {
+        padding: 12px 15px;
+        min-height: 80px;
+        max-height: 25vh;
+    }
+
+    .mobile-clue-number {
+        font-size: 1.1rem;
+    }
+
+    .mobile-clue-text {
+        font-size: 0.9rem;
+        line-height: 1.4;
+    }
+
+    /* Optimize cell size for landscape */
+    .cell {
+        width: clamp(26px, 7vw, 34px);
+        height: clamp(26px, 7vw, 34px);
+    }
+
+    .input-ghost {
+        font-size: clamp(12px, 4vw, 18px);
+    }
+
+    .cell-number {
+        font-size: 7px;
+    }
+
+    .solution-button-container {
+        margin-top: 5px;
+    }
+
+    .btn-solution {
+        font-size: 0.7rem;
+        padding: 4px 12px;
+    }
+
     .clues-box {
         max-height: 200px;
     }

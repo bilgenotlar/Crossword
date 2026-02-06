@@ -797,6 +797,32 @@ function selectWord(wordIndex) {
         clueEl.classList.add('active-clue');
         clueEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
+
+    // Update mobile clue panel
+    updateMobileCluePanel();
+}
+
+function updateMobileCluePanel() {
+    const mobilePanel = document.getElementById('mobile-clue-panel');
+    if (!mobilePanel) return;
+
+    const numberEl = document.getElementById('mobile-clue-number');
+    const directionEl = document.getElementById('mobile-clue-direction');
+    const textEl = document.getElementById('mobile-clue-text');
+
+    if (boardState.activeWord === null || boardState.activeWord === undefined) {
+        numberEl.textContent = '';
+        directionEl.textContent = '';
+        textEl.textContent = 'Bir kelime seçin...';
+        return;
+    }
+
+    const word = boardState.words[boardState.activeWord];
+    if (word) {
+        numberEl.textContent = word.number;
+        directionEl.textContent = word.direction === 'across' ? 'YATAY' : 'DİKEY';
+        textEl.textContent = word.clue;
+    }
 }
 
 function highlightBoard() {
@@ -819,9 +845,34 @@ function highlightBoard() {
             cell.el.classList.add('highlighted-word');
             if (i === boardState.activeWordIndex) {
                 cell.el.classList.add('selected');
+                
+                // Scroll to selected cell on mobile
+                if (window.innerWidth <= 768) {
+                    scrollToSelectedCell(cell.el);
+                }
             }
         }
     }
+}
+
+function scrollToSelectedCell(cellElement) {
+    const container = document.querySelector('.crossword-board-container');
+    if (!container || !cellElement) return;
+
+    // Get positions
+    const containerRect = container.getBoundingClientRect();
+    const cellRect = cellElement.getBoundingClientRect();
+
+    // Calculate scroll offsets to center the cell
+    const scrollLeft = container.scrollLeft + (cellRect.left - containerRect.left) - (containerRect.width / 2) + (cellRect.width / 2);
+    const scrollTop = container.scrollTop + (cellRect.top - containerRect.top) - (containerRect.height / 2) + (cellRect.height / 2);
+
+    // Smooth scroll to position
+    container.scrollTo({
+        left: scrollLeft,
+        top: scrollTop,
+        behavior: 'smooth'
+    });
 }
 
 function focusCellAt(wordObj, index) {
